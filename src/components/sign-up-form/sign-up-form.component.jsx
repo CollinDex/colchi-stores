@@ -1,12 +1,11 @@
 import { useState } from "react";
 
 import FormInput from "../form-input/form-input.component";
+import Button from "../button/button.component";
 
 import { createAuthUserWithEmaillAndPassword, createUserDocumentFromAuth } from "../../utils/firebase.utils";
 
 import './sign-up-form.styles.scss'
-import Button from "../button/button.component";
-
 
 const defaultFormFields = {
     displayName: '',
@@ -19,8 +18,7 @@ const SignUpForm = () => {
     //Track the change in input fields and store it into the formFields object
     const [ formFields, setFormFields ] = useState(defaultFormFields); 
     const { displayName, email, password, confirmPassword } = formFields;
-
-    console.log(formFields);
+//    console.log(formFields);
 
     const resetFormFields = () => {
         setFormFields(defaultFormFields);

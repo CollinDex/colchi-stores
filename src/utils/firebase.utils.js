@@ -4,7 +4,10 @@ import {
     getAuth,
     signInWithPopup,
     GoogleAuthProvider,
-    createUserWithEmailAndPassword
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signOut,
+    onAuthStateChanged
  } from 'firebase/auth'
 import {
     getFirestore,
@@ -78,3 +81,15 @@ export const createAuthUserWithEmaillAndPassword = async (email, password) => {
     if(!email || !password) return; //If there's no email or password don't create new user 
     return await createUserWithEmailAndPassword( auth, email, password);
 }
+
+//Sign in Authenticated user
+export const signInAuthUserWithEmaillAndPassword = async (email, password) => {
+    if(!email || !password) return; //If there's no email or password don't create new user 
+    return await signInWithEmailAndPassword( auth, email, password);
+}
+
+//Sign out Authenticated User
+export const signOutUser = async () => await signOut(auth);
+
+//Setup Firebase Auth event listener
+export const onAuthStateChangedListener = (callback) => onAuthStateChanged(auth, callback);
