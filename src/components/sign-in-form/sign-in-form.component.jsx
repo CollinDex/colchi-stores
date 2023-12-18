@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getRedirectResult } from "firebase/auth";
 
 import FormInput from "../form-input/form-input.component";
 
 
-import { 
+import {
+    auth, 
     signInWithGooglePopup,
+    signInWithGoogleRedirect,
     signInAuthUserWithEmaillAndPassword
 } from "../../utils/firebase.utils";
 
@@ -28,9 +31,37 @@ const SignInForm = () => {
         setFormFields(defaultFormFields);
     };
 
+    //Get Redirect result of GoogleRedirect on app mounting
+    useEffect( () => {
+        getGoogleRedirectResult();
+    }, [])
+
+    const getGoogleRedirectResult = async () => {
+        const response = await getRedirectResult(auth);
+        console.log(response);
+    }
+
     const signInWithGoogle = async () => {
-        //SignIn with Google Popup, if user closes the pop up display an alert
-              try {
+
+        // Check if the current device is mobile using orientation
+        const isMobile = 'onorientationchange' in window;
+
+        //If device is moblile then use googleRedirect
+        if (isMobile) {
+            try {
+                await signInWithGoogleRedirect();
+            } catch (error) {
+                  if(error.code === 'auth/popup-closed-by-user') {
+                      alert('Cannot create user, popup-closed-by-user');
+                  } else {
+                      console.log('User creation encountered an error', error);
+                  }
+              }
+            alert("You are using a touch-enabled device (likely a mobile or tablet).");
+
+        } else {
+            //SignIn with Google Popup, if user closes the pop up display an alert(on pc devices)
+            try {
                 await signInWithGooglePopup();      
               } catch (error) {
                   if(error.code === 'auth/popup-closed-by-user') {
@@ -39,13 +70,17 @@ const SignInForm = () => {
                       console.log('User creation encountered an error', error);
                   }
               }
-          }
+
+            alert("You are using a device with no touch support (likely a PC or non-mobile device).");
+        }
+
+    }
 
     const handleSubmit = async (event) =>{
         event.preventDefault();
 
         try {
-            const {user} = await signInAuthUserWithEmaillAndPassword(email,password);
+            await signInAuthUserWithEmaillAndPassword(email,password);
             resetFormFields();
         } catch (error) {
             if(error.code === 'auth/invalid-credential') {
