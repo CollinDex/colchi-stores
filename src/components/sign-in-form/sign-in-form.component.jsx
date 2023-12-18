@@ -47,7 +47,7 @@ const SignInForm = () => {
         const isMobile = 'onorientationchange' in window;
 
         //If device is moblile then use googleRedirect
-        if (isMobile) {
+        if (!isMobile) {
             try {
                 await signInWithGoogleRedirect();
             } catch (error) {
