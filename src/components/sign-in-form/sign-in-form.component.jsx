@@ -57,8 +57,6 @@ const SignInForm = () => {
                       console.log('User creation encountered an error', error);
                   }
               }
-            alert("You are using a touch-enabled device (likely a mobile or tablet).");
-
         } else {
             //SignIn with Google Popup, if user closes the pop up display an alert(on pc devices)
             try {
@@ -69,9 +67,7 @@ const SignInForm = () => {
                   } else {
                       console.log('User creation encountered an error', error);
                   }
-              }
-
-            alert("You are using a device with no touch support (likely a PC or non-mobile device).");
+            }
         }
 
     }
