@@ -14,7 +14,11 @@ import {
     getFirestore,
     doc,
     getDoc,
-    setDoc
+    setDoc,
+    collection,
+    writeBatch,
+    query,
+    getDocs
 } from 'firebase/firestore'
 
 // Your web app's Firebase configuration
@@ -45,6 +49,39 @@ export const signInWithGoogleRedirect = () => signInWithRedirect(auth,googleProv
 
 //Initialize firestore database
 export const db = getFirestore(); 
+
+//Adding Data to firebase db
+//collectionKey -> name of the collection you want to add
+//objectsToAdd -> data set to be added
+//field -> title for each dataset to add 
+export const addCollectionAndDocuments = async (collectionKey, objectsToAdd, field) => {
+    const collectionRef = collection(db, collectionKey);
+    const batch = writeBatch(db);
+
+    objectsToAdd.forEach((object) => {
+        const docRef = doc(collectionRef, object[field].toLowerCase());
+        batch.set(docRef, object);
+    });
+
+    await batch.commit();
+    console.log('done');
+};
+
+//Get products and categories from Firestore
+export const getCategoriesAndDocuments = async  () => {
+    const collectionRef = collection(db, 'categories');
+    const q = query(collectionRef);
+    
+    const querySnapshot = await getDocs(q);
+    const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
+        const { title, items } = docSnapshot.data();
+        acc[title.toLowerCase()] = items;
+        return acc;
+    }, {})
+
+    return categoryMap;
+};
+
 
 //Create user data from Google Auth and add to Firestore Database
 export const createUserDocumentFromAuth = async (userAuth, additionalInformation) => {
@@ -88,10 +125,14 @@ export const createAuthUserWithEmaillAndPassword = async (email, password) => {
 export const signInAuthUserWithEmaillAndPassword = async (email, password) => {
     if(!email || !password) return; //If there's no email or password don't create new user 
     return await signInWithEmailAndPassword( auth, email, password);
-}
+} 
 
 //Sign out Authenticated User
 export const signOutUser = async () => await signOut(auth);
 
 //Setup Firebase Auth event listener
 export const onAuthStateChangedListener = (callback) => onAuthStateChanged(auth, callback);
+
+//TODO:Fix issue with Responsivenes of the website
+//TODO:Fix issue with signIn on Redirect
+//SignIn with redirect doesnt succesfully authenticate and register a user on firebase and it doesnt return a signedIn state

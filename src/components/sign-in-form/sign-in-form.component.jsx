@@ -9,7 +9,7 @@ import {
     signInWithGooglePopup,
     signInWithGoogleRedirect,
     signInAuthUserWithEmaillAndPassword
-} from "../../utils/firebase.utils";
+} from "../../utils/firebase/firebase.utils";
 
 import './sign-in-form.styles.scss'
 
@@ -25,7 +25,7 @@ const SignInForm = () => {
     //Track the change in input fields and store it into the formFields object
     const [ formFields, setFormFields ] = useState(defaultFormFields); 
     const { email, password } = formFields;
-//    console.log(formFields);
+    //console.log(formFields);
 
     const resetFormFields = () => {
         setFormFields(defaultFormFields);
@@ -33,14 +33,33 @@ const SignInForm = () => {
 
     //Get Redirect result of GoogleRedirect on app mounting
     useEffect( () => {
+        const getGoogleRedirectResult = async () => {
+            const result = await getRedirectResult(auth);
+            if (result) {
+                // This is the signed-in user
+                const { displayName, email } = result.user;
+                console.log(result);
+                alert(`SignIn succesful \n Name: ${displayName} \n Email: ${email}`);
+            }
+        };
+
         getGoogleRedirectResult();
-    }, [])
+    }, []);
 
-    const getGoogleRedirectResult = async () => {
-        const response = await getRedirectResult(auth);
-        console.log(response);
-    }
 
+/*     const signInWithRedirect = async () => {
+        try {
+            await signInWithGoogleRedirect();
+            console.log('User creation succesful');
+        } catch (error) {
+              if(error.code === 'auth/popup-closed-by-user') {
+                  alert('Cannot create user, popup-closed-by-user');
+              } else {
+                  console.log('User creation encountered an error', error);
+              }
+          }
+    }; 
+ */    
     const signInWithGoogle = async () => {
 
         // Check if the current device is mobile using orientation
@@ -50,6 +69,7 @@ const SignInForm = () => {
         if (isMobile) {
             try {
                 await signInWithGoogleRedirect();
+                console.log('User creation succesful');
             } catch (error) {
                   if(error.code === 'auth/popup-closed-by-user') {
                       alert('Cannot create user, popup-closed-by-user');
@@ -115,6 +135,7 @@ const SignInForm = () => {
                 <div className="buttons-container">
                 <Button type='submit'>Sign In</Button>
                 <Button type='button' buttonType='google' onClick={signInWithGoogle}>Google sign in</Button>
+                {/* <Button type='button' buttonType='google' onClick={signInWithRedirect}>Google Redirect sign in</Button> */}
                 </div>
             </form>
         </div>
