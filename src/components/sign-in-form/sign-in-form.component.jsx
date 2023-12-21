@@ -47,7 +47,7 @@ const SignInForm = () => {
     }, []);
 
 
-/*     const signInWithRedirect = async () => {
+    const signInWithRedirect = async () => {
         try {
             await signInWithGoogleRedirect();
             console.log('User creation succesful');
@@ -59,7 +59,7 @@ const SignInForm = () => {
               }
           }
     }; 
- */    
+    
     const signInWithGoogle = async () => {
 
         // Check if the current device is mobile using orientation
@@ -69,7 +69,6 @@ const SignInForm = () => {
         if (isMobile) {
             try {
                 await signInWithGoogleRedirect();
-                console.log('User creation succesful');
             } catch (error) {
                   if(error.code === 'auth/popup-closed-by-user') {
                       alert('Cannot create user, popup-closed-by-user');
@@ -80,7 +79,8 @@ const SignInForm = () => {
         } else {
             //SignIn with Google Popup, if user closes the pop up display an alert(on pc devices)
             try {
-                await signInWithGooglePopup();      
+                 await signInWithGooglePopup();
+
               } catch (error) {
                   if(error.code === 'auth/popup-closed-by-user') {
                       alert('Cannot create user, popup-closed-by-user');
@@ -135,7 +135,7 @@ const SignInForm = () => {
                 <div className="buttons-container">
                 <Button type='submit'>Sign In</Button>
                 <Button type='button' buttonType='google' onClick={signInWithGoogle}>Google sign in</Button>
-                {/* <Button type='button' buttonType='google' onClick={signInWithRedirect}>Google Redirect sign in</Button> */}
+                <Button type='button' buttonType='google' onClick={signInWithRedirect}>Google Redirect sign in</Button>
                 </div>
             </form>
         </div>
