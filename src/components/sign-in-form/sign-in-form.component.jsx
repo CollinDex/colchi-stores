@@ -47,7 +47,7 @@ const SignInForm = () => {
     }, []);
 
 
-    const signInWithRedirect = async () => {
+    /* const signInWithRedirect = async () => {
         try {
             await signInWithGoogleRedirect();
             console.log('User creation succesful');
@@ -58,7 +58,7 @@ const SignInForm = () => {
                   console.log('User creation encountered an error', error);
               }
           }
-    }; 
+    }; */ 
     
     const signInWithGoogle = async () => {
 
@@ -135,7 +135,7 @@ const SignInForm = () => {
                 <div className="buttons-container">
                 <Button type='submit'>Sign In</Button>
                 <Button type='button' buttonType='google' onClick={signInWithGoogle}>Google sign in</Button>
-                <Button type='button' buttonType='google' onClick={signInWithRedirect}>Google Redirect sign in</Button>
+                {/* <Button type='button' buttonType='google' onClick={signInWithRedirect}>Google Redirect sign in</Button> */}
                 </div>
             </form>
         </div>
