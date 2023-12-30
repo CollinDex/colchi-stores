@@ -40,12 +40,35 @@
     font-size: 18px;
 
     .name {
-      width: 90%;
+      width: 80%;
       margin-bottom: 15px;
     }
 
     .price {
-      width: 10%;
+      width: 20%;
     }
   }
+
+  @media (max-width: 575.98px) { 
+    margin-bottom: 15px;
+    margin-top: 15px;
+
+    button {
+      height: fit-content;
+      min-width: 130px;
+      width: 100%;
+      padding: 0 5px 0 5px;
+    }
+
+    .footer {
+      margin: 10px 0;
+      .name {
+        text-align:left;
+      }
+      .price {
+        text-align:right;
+      }
+    }
+ }
+
 }
