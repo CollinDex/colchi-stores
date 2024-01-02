@@ -5,7 +5,7 @@ import { CategoriesContext } from '../../contexts/categories.context';
 
 import ProductCard from '../../components/product-card/product-card.component';
 
-import './category.styles.scss';
+import { Title, ProductContainer } from './category.styles';
 
 
 const Category = () => {
@@ -19,12 +19,12 @@ const Category = () => {
 
     return (
         <Fragment>
-            <h2 className='title'>{category}</h2>
-            <div className='products-container'>
+            <Title>{category}</Title>
+            <ProductContainer>
                 {products &&
                     products.map((product) => <ProductCard key={product.id} product={product}/>)
                 }
-            </div>
+            </ProductContainer>
         </Fragment>
     );
 }
