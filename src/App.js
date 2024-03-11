@@ -1,11 +1,10 @@
 import { useEffect } from "react";
 import { useDispatch } from 'react-redux';
 import { setCurrentUser } from './store/user/user.action';
-import { setCategoriesMap } from "./store/categories/categories.action";
 
 import { Routes, Route } from 'react-router-dom';
 
-import { onAuthStateChangedListener, createUserDocumentFromAuth, getCategoriesAndDocuments } from "./utils/firebase/firebase.utils";
+import { onAuthStateChangedListener, createUserDocumentFromAuth } from "./utils/firebase/firebase.utils";
 import Home from './routes/home/home.component'
 import Navigation from './routes/navigation/navigation.component'; 
 import Authentication  from './routes/authentication/authentication.component';
@@ -24,17 +23,6 @@ const App = () => {
     });
     return unsubscribe;
   }, []);
-
-  //Get the CategoryMap and set it to the reducer
-  useEffect(() => {
-    const getCategoriesMap = async () => {
-        const categoryMap =  await getCategoriesAndDocuments();
-        console.log(categoryMap);
-        dispatch(setCategoriesMap(categoryMap));
-        return categoryMap;
-    }
-    getCategoriesMap();
-}, []);
 
   return (
     <Routes>
